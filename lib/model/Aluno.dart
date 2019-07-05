@@ -1,6 +1,6 @@
-import 'package:escola/model/Turma.dart';
 
 
+import 'Turma.dart';
 
 class Aluno{
 

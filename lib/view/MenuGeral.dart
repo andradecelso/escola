@@ -1,6 +1,7 @@
-import 'package:escola/view/MenuAluno.dart' as menualuno;
-import 'package:escola/view/MenuTurma.dart' as menuturma;
 import 'dart:io';
+
+import 'MenuAluno.dart';
+import 'MenuTurma.dart';
 
 class MenuGeral {
 
@@ -17,13 +18,13 @@ class MenuGeral {
       print('(2) - Menu Turma');
       print('(0) - Sair');
 
-    int op = int.parse(stdin.readLineSync());
+   op = int.parse(stdin.readLineSync());
 
       switch (op) {
         case 1:
-          menualuno.MenuAluno().menuAluno();
+          MenuAluno().menu();
           break;
-        case 2:menuturma.MenuTurma().menuTurma();
+        case 2:MenuTurma().menu();
           break;
         case 3:
           break;

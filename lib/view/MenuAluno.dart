@@ -1,14 +1,17 @@
 import 'dart:io';
-import 'package:escola/controller/AlunoControl.dart' as alunocontrol;
-import 'package:escola/controller/TurmaControl.dart' as turmacontrol;
-import 'package:escola/model/Aluno.dart';
-import 'package:escola/model/Turma.dart';
+
+import '../DAO/TurmaDao.dart';
+import '../controller/AlunoControl.dart';
+import '../controller/TurmaControl.dart';
+import '../model/Aluno.dart';
+import '../model/Turma.dart';
+import 'MenuTurma.dart';
 
 
 class MenuAluno{
 
 
-  void menuAluno() {
+  void menu() {
     int op = 100;
 
     print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
@@ -23,7 +26,7 @@ class MenuAluno{
       print('(0) - Sair');
 
 
-      int op = int.parse(stdin.readLineSync());
+      op = int.parse(stdin.readLineSync());
 
 
       switch (op) {
@@ -58,24 +61,124 @@ class MenuAluno{
     print('cpf:');
     aluno.cpf = stdin.readLineSync();
 
+    print('Selecione turma pelo codigo:');
 
-    alunocontrol.AlunoControl().adicionarAluno(aluno);
+
+    if (!TurmaControl().listar().isEmpty){
+      TurmaControl().listaTurmas.forEach((turma){
+
+        print('${turma.codigo}\t\t ${turma.nomeTurma}');
+
+      }) ;
+
+      print(':');
+
+      int codigo = int.parse(stdin.readLineSync());
+
+      int qtd = TurmaControl().listar().length;
+
+      if (codigo > qtd){
+        print('Turma selecionada nao existe, deseja cadastra-la? (s/n) ');
+
+        String turmaNova = stdin.readLineSync();
+
+        if ((turmaNova.isEmpty) || (turmaNova.toLowerCase() == 'n') ){
+
+          exit(0);
+        }else if (turmaNova.toLowerCase() == 's'){
+
+          MenuTurma().inserirTurma();
+
+          aluno.turma = TurmaControl().listar().last;
+          int codTurma = TurmaControl().listar().last.codigo;
+          TurmaControl().listaTurmas.elementAt(codTurma).aluno = aluno;
+
+          print('codigo turma cadastrada: ${codTurma}, nome da turma cadastrada no aluno:${aluno.turma.nomeTurma}');
+          print('nome do aluno cadastrado na turma: ${TurmaControl().listaTurmas.elementAt(codTurma).aluno.nome}');
+
+        }
+      };
+
+      aluno.turma = TurmaControl().listar().elementAt(codigo-1);
+
+    }else {
+      print('Não ha turma cadastrada. Deseja cadastrar agora? (s/n)');
+
+      String turmaNova = stdin.readLineSync();
+
+      if ((turmaNova.isEmpty) || (turmaNova.toLowerCase() == 'n') ){
+
+        exit(0);
+      }else if (turmaNova.toLowerCase() == 's'){
+
+        MenuTurma().inserirTurma();
+
+        aluno.turma = TurmaControl().listar().last;
+        int codTurma = TurmaControl().listar().last.codigo;
+        print('codigo turma cadastrada: ${aluno.turma.codigo}, nome da turma cadastrada no aluno:${aluno.turma.nomeTurma}');
+
+        AlunoControl().adicionarAluno(aluno);
+
+        MenuTurma().listarTurma();
+
+        //TurmaControl().listaTurmas[codTurma].aluno = aluno;
+
+      //  print('codigo turma cadastrada: ${codTurma}, nome da turma cadastrada no aluno:${aluno.turma.nomeTurma}');
+       // print('nome do aluno cadastrado na turma: ${TurmaControl().listaTurmas.elementAt(codTurma).aluno.nome}');
+      }
 
 
-  }
+    }
+
+//    AlunoControl().adicionarAluno(aluno);
+
+
+  }  // metodo inserir
+
+
+
+  void removerAluno(){
+
+    listar();
+
+    print('Selecione aluno pelo codigo:');
+    int codaluno = int.parse(stdin.readLineSync());
+
+    if (AlunoControl().listar().isNotEmpty){
+
+      Aluno rmvAluno = AlunoControl().listar().elementAt(codaluno-1);
+
+      AlunoControl().removerAluno(rmvAluno);
+      print(':');
+
+    } else
+      print('Nao ha aluno cadastrado');
+
+
+
+
+  } //fim metodo remover
+
 
 
   void listar(){
 
-alunocontrol.AlunoControl().listaAlunos.forEach((aluno)
+    print('Cod. \t Nome \t\t Idade\t\t CPF \t\t Cod. Turma \t\t Nome Turma');
+
+  AlunoControl().listaAlunos.forEach((aluno)
             {
-      print('Cod.: ${aluno.cod} - Nome: ${aluno.nome} - idade: ${aluno.idade}');
-    });
 
-  }
+              if (!TurmaControl().listar().isEmpty)
+                print('${aluno.cod} \t\t ${aluno.nome} \t\t${aluno.idade} \t\t\t ${aluno.cpf} \t\t\t${aluno.turma.codigo}\t\t${aluno.turma.nomeTurma}');
+              else
+                print('${aluno.cod} \t\t ${aluno.nome} \t\t${aluno.idade} \t\t\t ${aluno.cpf} ');
+
+            });
+
+  } //fim metodo listar
 
 
 
 
 
-}
+}  //fim classe

@@ -1,4 +1,5 @@
-import 'package:escola/model/Aluno.dart';
+
+import 'Aluno.dart';
 
 class Turma{
 
