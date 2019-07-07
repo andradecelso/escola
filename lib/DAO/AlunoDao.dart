@@ -1,6 +1,7 @@
-import 'package:escola/model/Aluno.dart';
-import 'package:escola/model/Turma.dart';
 
+
+
+import '../model/Aluno.dart';
 
 class AlunoDao{
 

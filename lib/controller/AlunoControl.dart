@@ -1,5 +1,9 @@
-import 'package:escola/DAO/AlunoDao.dart' as alunodao;
-import 'package:escola/model/Aluno.dart';
+
+
+
+
+import '../DAO/AlunoDao.dart';
+import '../model/Aluno.dart';
 
 
 
@@ -7,7 +11,7 @@ class AlunoControl {
 
 
 
-  List<Aluno> listaAlunos = alunodao.AlunoDao.listaDeAlunos;
+  List<Aluno> listaAlunos = AlunoDao.listaDeAlunos;
 
 
   List<Aluno> listar(){
@@ -18,20 +22,20 @@ class AlunoControl {
 
   int proximo(){
 
-    return alunodao.AlunoDao.listaDeAlunos.length + 1;
+    return AlunoDao.listaDeAlunos.length + 1;
 
   }
 
   void adicionarAluno(Aluno aluno) {
 
     aluno.cod = proximo();
-    alunodao.AlunoDao.listaDeAlunos.add(aluno);
+    AlunoDao.listaDeAlunos.add(aluno);
   }
 
 
 
   bool removerAluno(Aluno aluno) {
-    if (alunodao.AlunoDao.listaDeAlunos.remove(aluno)) {
+    if (AlunoDao.listaDeAlunos.remove(aluno)) {
       return true;
     } else
       return false;

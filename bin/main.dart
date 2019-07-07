@@ -1,10 +1,10 @@
-import 'package:escola/view/MenuGeral.dart' as menu;
-
+import '../lib/view/MenuGeral.dart';
 
 main(List<String> arguments) {
 
+  MenuGeral menugeral = MenuGeral();
 
-  menu.MenuGeral().menu();
+    menugeral.menu();
 
 
 

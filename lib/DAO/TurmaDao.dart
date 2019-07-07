@@ -1,5 +1,6 @@
-import 'package:escola/model/Turma.dart';
 
+
+import '../model/Turma.dart';
 
 class TurmaDao{
 
@@ -22,7 +23,6 @@ class TurmaDao{
     }else
       return false;
   }
-
 
 
 

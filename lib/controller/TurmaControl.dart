@@ -1,13 +1,15 @@
-import 'package:escola/DAO/TurmaDao.dart' as turmadao;
-import 'package:escola/model/Turma.dart';
 
 
+
+
+import '../DAO/TurmaDao.dart';
+import '../model/Turma.dart';
 
 class TurmaControl {
 
 
 
-  List<Turma> listaTurmas = turmadao.TurmaDao.listaDeTurmas;
+  List<Turma> listaTurmas = TurmaDao.listaDeTurmas;
 
 
   List<Turma> listar(){
@@ -16,14 +18,25 @@ class TurmaControl {
   }
 
 
+
+  int proximo(){
+
+    return TurmaDao.listaDeTurmas.length + 1;
+
+  }
+
+
+
   void adicionarTurma(Turma turma) {
-    turmadao.TurmaDao.listaDeTurmas.add(turma);
+
+    turma.codigo = proximo();
+    TurmaDao.listaDeTurmas.add(turma);
   }
 
 
 
   bool removerTurma(Turma turma) {
-    if (turmadao.TurmaDao.listaDeTurmas.remove(turma)) {
+    if (TurmaDao.listaDeTurmas.remove(turma)) {
       return true;
     } else
       return false;
