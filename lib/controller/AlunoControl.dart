@@ -9,14 +9,9 @@ import '../model/Aluno.dart';
 
 class AlunoControl {
 
-
-
-  List<Aluno> listaAlunos = AlunoDao.listaDeAlunos;
-
-
   List<Aluno> listar(){
 
-    return  listaAlunos;
+    return  AlunoDao().listAlunos;
   }
 
 

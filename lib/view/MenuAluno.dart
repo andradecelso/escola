@@ -5,11 +5,10 @@ import '../controller/AlunoControl.dart';
 import '../controller/TurmaControl.dart';
 import '../model/Aluno.dart';
 import '../model/Turma.dart';
-import 'MenuTurma.dart';
 
 
 class MenuAluno{
-
+Aluno aluno = Aluno();
 
   void menu() {
     int op = 100;
@@ -47,93 +46,66 @@ class MenuAluno{
   }
 
 
-  void inserir(){
-
-    Aluno aluno = Aluno();
-
-    print('Favor digitar \n ');
-    print('nome:');
-    aluno.nome = stdin.readLineSync();
-
-    print('idade:');
-    aluno.idade = int.parse(stdin.readLineSync());
-
-    print('cpf:');
-    aluno.cpf = stdin.readLineSync();
-
-    print('Selecione turma pelo codigo:');
 
 
-    if (!TurmaControl().listar().isEmpty){
-      TurmaControl().listaTurmas.forEach((turma){
+void inserir() {
 
-        print('${turma.codigo}\t\t ${turma.nomeTurma}');
+  int posicao;
+  int codTurmaSelecionada;
+  print('Favor digitar \n ');
+  print('nome:');
+  aluno.nome = stdin.readLineSync();
+  print('idade:');
+  aluno.idade = int.parse(stdin.readLineSync());
+  print('cpf:');
+  aluno.cpf = stdin.readLineSync();
 
-      }) ;
+  print('Selecione turma pelo codigo:');
+// verifica se a lista esta vazia, se nao estiver, lista o conteudo de turmas
 
-      print(':');
 
-      int codigo = int.parse(stdin.readLineSync());
 
-      int qtd = TurmaControl().listar().length;
+  if (TurmaControl().listar().isEmpty) {
 
-      if (codigo > qtd){
-        print('Turma selecionada nao existe, deseja cadastra-la? (s/n) ');
+    print('nao existe turma ainda, favor cadastrar');
+    AlunoControl().adicionarAluno(aluno);
+    AlunoControl().listar();
+  }
+  else {
 
-        String turmaNova = stdin.readLineSync();
+    TurmaControl().listar().forEach((turma) {
+      print('${turma.codigo}\t\t ${turma.nomeTurma}');
+    });
+    print(':');
 
-        if ((turmaNova.isEmpty) || (turmaNova.toLowerCase() == 'n') ){
 
-          exit(0);
-        }else if (turmaNova.toLowerCase() == 's'){
+    //armazena o codigo da turma selecionada
+    codTurmaSelecionada = int.parse(stdin.readLineSync());
+    // recebe numa instancia de turma o que foi selecionado
+    Turma turmaCel = Turma();
+    turmaCel.codigo = codTurmaSelecionada;
 
-          MenuTurma().inserirTurma();
-
-          aluno.turma = TurmaControl().listar().last;
-          int codTurma = TurmaControl().listar().last.codigo;
-          TurmaControl().listaTurmas.elementAt(codTurma).aluno = aluno;
-
-          print('codigo turma cadastrada: ${codTurma}, nome da turma cadastrada no aluno:${aluno.turma.nomeTurma}');
-          print('nome do aluno cadastrado na turma: ${TurmaControl().listaTurmas.elementAt(codTurma).aluno.nome}');
-
-        }
-      };
-
-      aluno.turma = TurmaControl().listar().elementAt(codigo-1);
-
-    }else {
-      print('Não ha turma cadastrada. Deseja cadastrar agora? (s/n)');
-
-      String turmaNova = stdin.readLineSync();
-
-      if ((turmaNova.isEmpty) || (turmaNova.toLowerCase() == 'n') ){
-
+    // verifica se existe realmente a turma na lista e obtem a posical na lista
+    TurmaDao.listaDeTurmas.forEach((turma) {
+      if (turma.codigo == turmaCel.codigo) {
+        posicao = turma.codigo - 1;
+      } else {
+        print('opcao nao encontrada');
         exit(0);
-      }else if (turmaNova.toLowerCase() == 's'){
-
-        MenuTurma().inserirTurma();
-
-        aluno.turma = TurmaControl().listar().last;
-        int codTurma = TurmaControl().listar().last.codigo;
-        print('codigo turma cadastrada: ${aluno.turma.codigo}, nome da turma cadastrada no aluno:${aluno.turma.nomeTurma}');
-
-        AlunoControl().adicionarAluno(aluno);
-
-        MenuTurma().listarTurma();
-
-        //TurmaControl().listaTurmas[codTurma].aluno = aluno;
-
-      //  print('codigo turma cadastrada: ${codTurma}, nome da turma cadastrada no aluno:${aluno.turma.nomeTurma}');
-       // print('nome do aluno cadastrado na turma: ${TurmaControl().listaTurmas.elementAt(codTurma).aluno.nome}');
       }
+    });
+    // na instancia de aluno insere a turma que foi selecionada
+    aluno.turma = TurmaControl().listar()[posicao];
+    AlunoControl().adicionarAluno(aluno);
+
+    // tenta inserir na turma selecionada os dados do aluno instanciado.  --> esta parte que da erro, como se estivesse nulo,
+    // mas nao esta pois na lista tem o a turma criada, e tento inserir o objeto aluno que tambem esta em memoria
+    TurmaDao.listaDeTurmas[posicao].alunosTurma.add(aluno);
 
 
-    }
+  }
+}
 
-//    AlunoControl().adicionarAluno(aluno);
-
-
-  }  // metodo inserir
 
 
 
@@ -165,12 +137,10 @@ class MenuAluno{
 
     print('Cod. \t Nome \t\t Idade\t\t CPF \t\t Cod. Turma \t\t Nome Turma');
 
-  AlunoControl().listaAlunos.forEach((aluno)
+  AlunoControl().listar().forEach((aluno)
             {
 
-              if (!TurmaControl().listar().isEmpty)
-                print('${aluno.cod} \t\t ${aluno.nome} \t\t${aluno.idade} \t\t\t ${aluno.cpf} \t\t\t${aluno.turma.codigo}\t\t${aluno.turma.nomeTurma}');
-              else
+
                 print('${aluno.cod} \t\t ${aluno.nome} \t\t${aluno.idade} \t\t\t ${aluno.cpf} ');
 
             });

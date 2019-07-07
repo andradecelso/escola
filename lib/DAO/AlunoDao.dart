@@ -10,6 +10,7 @@ class AlunoDao{
   List<Aluno> get listAlunos => listaDeAlunos;
 
 
+
   void inserirAluno(Aluno aluno) {
 
   listaDeAlunos.add(aluno);

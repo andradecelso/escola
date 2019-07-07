@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import '../DAO/TurmaDao.dart';
-import '../controller/AlunoControl.dart';
+
 import '../controller/TurmaControl.dart';
-import '../model/Aluno.dart';
+
 import '../model/Turma.dart';
 
 
@@ -72,8 +72,8 @@ class MenuTurma{
     TurmaControl().listaTurmas.forEach((turma){
 
 
-      if(TurmaDao().listTurmas.last.aluno != null){
-        print('${turma.codigo}\t\t ${turma.nomeTurma} \t\t ${turma.aluno.cod} \t\t ${turma.aluno.nome}');
+      if(TurmaDao().listTurmas.last != null){
+        print('${turma.codigo}\t\t ${turma.nomeTurma} ');
 
       }else
         print('${turma.codigo}\t\t ${turma.nomeTurma}');
